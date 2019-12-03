@@ -16,6 +16,7 @@ class Game : public QObject
     signals:
     void markMove(const int &board, const int &field, const QString symbol);
     void markLocalWin(const int &board, const QString symbol);
+    void updateWhoseTurn(const QString symbol);
     void globalWin(const QString symbol);
     void highlightPermittedBoards(const QVector<int> permittedBoards);
 

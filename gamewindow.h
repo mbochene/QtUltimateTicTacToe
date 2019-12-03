@@ -27,18 +27,21 @@ signals:
 public slots:
     void itemClicked();
     void markMove(const int &board, const int &field, const QString symbol);
+    void updateWhoseTurnLabel(const QString symbol);
     void highlightBoards(const QVector<int> permittedBoards);
     void swapBoardToImage(const int & board, const QString symbol);
+    void showEndRound();
+    void prepareNewBoard();
 
 private:
     Ui::GameWindow *ui;
     QVector<QVector<QPushButton *>>itemButtons;
     QVector<QGridLayout *> boardLayouts;
     QVector<QFrame *> boardFrames;
-    QVector<QLabel *> labels;
     Game *game;
 
     void setUpBoards();
+    void clearBoards();
     QPushButton *createButton(const int &buttonNumber);
 };
 #endif // GAMEWINDOW_H

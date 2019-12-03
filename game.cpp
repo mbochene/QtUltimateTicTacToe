@@ -38,6 +38,8 @@ void Game::processMove(const int &board, const int &field)
             emit highlightPermittedBoards({gameState->getNextBoard()});
         else
             emit highlightPermittedBoards(playableBoards);
+
+        emit updateWhoseTurn(playerSymbolMap[gameState->getWhoseTurn()]);
     }
 }
 

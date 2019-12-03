@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>786</width>
+    <height>608</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>774</width>
+    <height>608</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>GameWindow</string>
@@ -20,7 +26,7 @@
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>140</x>
+      <x>40</x>
       <y>80</y>
       <width>501</width>
       <height>441</height>
@@ -234,13 +240,91 @@
      </item>
     </layout>
    </widget>
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>80</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>Whose turn</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="whoseTurnLabel">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>120</y>
+      <width>111</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>440</y>
+      <width>121</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="controlButtonsLayout">
+     <item>
+      <widget class="QPushButton" name="resetButton">
+       <property name="text">
+        <string>RESET</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="continueButton">
+       <property name="text">
+        <string>CONTINUE</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>786</width>
      <height>21</height>
     </rect>
    </property>

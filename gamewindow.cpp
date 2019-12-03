@@ -6,12 +6,20 @@ GameWindow::GameWindow(QWidget *parent)
     , ui(new Ui::GameWindow)
 {
     ui->setupUi(this);
+
+    ui->continueButton->setVisible(false);
     setUpBoards();
     game = new Game();
+
+    connect(ui->resetButton, &QPushButton::clicked, this, &GameWindow::prepareNewBoard);
+    connect(ui->continueButton, &QPushButton::clicked, this, &GameWindow::prepareNewBoard);
     connect(this, &GameWindow::reportMove, game, &Game::processMove);
     connect(game, &Game::markMove, this, &GameWindow::markMove);
     connect(game, &Game::highlightPermittedBoards, this, &GameWindow::highlightBoards);
     connect(game, &Game::markLocalWin, this, &GameWindow::swapBoardToImage);
+    connect(game, &Game::updateWhoseTurn, this, &GameWindow::updateWhoseTurnLabel);
+    connect(game, &Game::globalWin, this, &GameWindow::showEndRound);
+    updateWhoseTurnLabel(QString("X"));
 }
 
 GameWindow::~GameWindow()
@@ -39,6 +47,12 @@ void GameWindow::markMove(const int &board, const int &field, const QString symb
     button->setEnabled(false);
 }
 
+void GameWindow::updateWhoseTurnLabel(const QString symbol)
+{
+    QPixmap *pixmap = new QPixmap(":/" + symbol);
+    ui->whoseTurnLabel->setPixmap(pixmap->scaled(ui->whoseTurnLabel->height(), ui->whoseTurnLabel->width(), Qt::KeepAspectRatio));
+}
+
 void GameWindow::highlightBoards(const QVector<int> permittedBoards)
 {
     int j=0;
@@ -62,9 +76,31 @@ void GameWindow::swapBoardToImage(const int &board, const QString symbol)
 {
     for(QPushButton *x : itemButtons[board])
         x->deleteLater();
+
+    itemButtons[board].clear();
+
     QLabel *label = new QLabel();
     label->setPixmap(QPixmap(":/" + symbol));
+    label->setObjectName(QString("label_") + QString::number(board));
     boardLayouts[board]->addWidget(label);
+}
+
+void GameWindow::showEndRound()
+{
+    for(int i=0; i<9; i++)
+    {
+        boardFrames[i]->setStyleSheet("background-color:white");
+    }
+    ui->continueButton->setVisible(true);
+}
+
+void GameWindow::prepareNewBoard()
+{
+    clearBoards();
+    game->prepareNewGame();
+    setUpBoards();
+    ui->continueButton->setVisible(false);
+    updateWhoseTurnLabel(QString("X"));
 }
 
 void GameWindow::setUpBoards()
@@ -89,6 +125,24 @@ void GameWindow::setUpBoards()
      }
 }
 
+void GameWindow::clearBoards()
+{
+    for(int i=0; i<9; i++)
+    {
+        QLabel *label = boardFrames[i]->findChild<QLabel*>(QString("label_") + QString::number(i));
+
+        if(label!=nullptr)
+            label->deleteLater();
+
+        for(QPushButton *button : itemButtons[i])
+            button->deleteLater();
+    }
+
+    itemButtons.clear();
+    boardFrames.clear();
+    boardLayouts.clear();
+}
+
 QPushButton *GameWindow::createButton(const int &buttonNumber)
 {
     QPushButton *button = new QPushButton;
@@ -98,7 +152,7 @@ QPushButton *GameWindow::createButton(const int &buttonNumber)
     button->setAutoExclusive(true);
     button->setObjectName(QString::number(buttonNumber));
     button->setIconSize(button->sizeHint());
-    connect(button, SIGNAL(clicked()),this,SLOT(itemClicked()));
+    connect(button, &QPushButton::clicked, this, &GameWindow::itemClicked);
     return button;
 }
 
