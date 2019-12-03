@@ -31,10 +31,13 @@ void Game::processMove(const int &board, const int &field)
                 emit globalWin(whoseTurn);
                 return;
             }
-            playableBoards.remove(board);
+            playableBoards.removeOne(board);
         }
 
-        emit highlightPlayableBoards(playableBoards);
+        if(gameState->getNextBoard() != 9)
+            emit highlightPermittedBoards({gameState->getNextBoard()});
+        else
+            emit highlightPermittedBoards(playableBoards);
     }
 }
 

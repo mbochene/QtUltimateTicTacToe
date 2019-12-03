@@ -27,6 +27,8 @@ signals:
 public slots:
     void itemClicked();
     void markMove(const int &board, const int &field, const QString symbol);
+    void highlightBoards(const QVector<int> permittedBoards);
+    void swapBoardToImage(const int & board, const QString symbol);
 
 private:
     Ui::GameWindow *ui;

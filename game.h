@@ -17,7 +17,7 @@ class Game : public QObject
     void markMove(const int &board, const int &field, const QString symbol);
     void markLocalWin(const int &board, const QString symbol);
     void globalWin(const QString symbol);
-    void highlightPlayableBoards(const QVector<int> playableBoards);
+    void highlightPermittedBoards(const QVector<int> permittedBoards);
 
     public slots:
     void processMove(const int &board, const int &field);

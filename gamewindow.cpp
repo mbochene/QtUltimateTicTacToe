@@ -10,6 +10,8 @@ GameWindow::GameWindow(QWidget *parent)
     game = new Game();
     connect(this, &GameWindow::reportMove, game, &Game::processMove);
     connect(game, &Game::markMove, this, &GameWindow::markMove);
+    connect(game, &Game::highlightPermittedBoards, this, &GameWindow::highlightBoards);
+    connect(game, &Game::markLocalWin, this, &GameWindow::swapBoardToImage);
 }
 
 GameWindow::~GameWindow()
@@ -31,12 +33,38 @@ void GameWindow::itemClicked()
 
 void GameWindow::markMove(const int &board, const int &field, const QString symbol)
 {
-    std::cout << board << " " << field << " " << symbol.toLocal8Bit().constData() << std::endl;
     QWidget *boardGrid = ui->centralwidget->findChild<QWidget *>(QString("gridLayoutWidget_") + QString::number(board));
-    std::cout << boardGrid->objectName().toLocal8Bit().constData() << std::endl;
     QPushButton *button = boardGrid->findChild<QPushButton *>(QString::number(field));
-    button->setText(symbol);
+    button->setIcon(QIcon(":/" + symbol));
     button->setEnabled(false);
+}
+
+void GameWindow::highlightBoards(const QVector<int> permittedBoards)
+{
+    int j=0;
+    const int permittedBoardsSize = permittedBoards.size();
+
+    for(int i=0; i<9; i++)
+    {
+        if(j < permittedBoardsSize && i == permittedBoards[j])
+        {
+            boardFrames[i]->setStyleSheet("background-color:rgb(235, 123, 123)");
+            ++j;
+        }
+        else
+        {
+            boardFrames[i]->setStyleSheet("background-color:white");
+        }
+    }
+}
+
+void GameWindow::swapBoardToImage(const int &board, const QString symbol)
+{
+    for(QPushButton *x : itemButtons[board])
+        x->deleteLater();
+    QLabel *label = new QLabel();
+    label->setPixmap(QPixmap(":/" + symbol));
+    boardLayouts[board]->addWidget(label);
 }
 
 void GameWindow::setUpBoards()
@@ -44,6 +72,7 @@ void GameWindow::setUpBoards()
      for(int i=0; i<9; i++)
      {
          boardFrames.append(ui->centralwidget->findChild<QFrame *>(QString("frame_") + QString::number(i)));
+         boardFrames[i]->setStyleSheet("background-color:white");
          boardLayouts.append(ui->centralwidget->findChild<QGridLayout *>(QString("board_") + QString::number(i)));
          boardFrames[i]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
          boardFrames[i]->setFrameStyle(QFrame::Panel | QFrame::Plain);
@@ -68,6 +97,7 @@ QPushButton *GameWindow::createButton(const int &buttonNumber)
     button->setCheckable(true);
     button->setAutoExclusive(true);
     button->setObjectName(QString::number(buttonNumber));
+    button->setIconSize(button->sizeHint());
     connect(button, SIGNAL(clicked()),this,SLOT(itemClicked()));
     return button;
 }
