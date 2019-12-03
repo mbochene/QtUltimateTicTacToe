@@ -7,6 +7,7 @@
 #include <QFrame>
 #include <QLabel>
 #include <iostream>
+#include <game.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class GameWindow; }
@@ -20,8 +21,12 @@ public:
     GameWindow(QWidget *parent = nullptr);
     ~GameWindow();
 
+signals:
+    void reportMove(const int &board, const int &field);
+
 public slots:
-    int itemClicked();
+    void itemClicked();
+    void markMove(const int &board, const int &field, const QString symbol);
 
 private:
     Ui::GameWindow *ui;
@@ -29,6 +34,7 @@ private:
     QVector<QGridLayout *> boardLayouts;
     QVector<QFrame *> boardFrames;
     QVector<QLabel *> labels;
+    Game *game;
 
     void setUpBoards();
     QPushButton *createButton(const int &buttonNumber);
