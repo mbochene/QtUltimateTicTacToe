@@ -7,12 +7,24 @@ GameWindow::GameWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->continueButton->setVisible(false);
+    ui->boardFrame->setFrameStyle(QFrame::Panel | QFrame::Plain);
+    ui->boardFrame->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    ui->whoseTurnLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+    mainLayout = new QGridLayout();
+    mainLayout->setRowMinimumHeight(0, 30);
+    mainLayout->setColumnMinimumWidth(0, 30);
+    mainLayout->setColumnMinimumWidth(14, 30);
+    mainLayout->addWidget(ui->boardFrame, 1, 2, 20, 10);
+    mainLayout->addWidget(ui->whoseTurnTextLabel, 1, 15);
+    mainLayout->addWidget(ui->whoseTurnLabel, 2, 15);
+    mainLayout->addWidget(ui->resetButton, 20, 15);
+    ui->centralwidget->setLayout(mainLayout);
+
     setUpBoards();
     game = new Game();
 
     connect(ui->resetButton, &QPushButton::clicked, this, &GameWindow::prepareNewBoard);
-    connect(ui->continueButton, &QPushButton::clicked, this, &GameWindow::prepareNewBoard);
     connect(this, &GameWindow::reportMove, game, &Game::processMove);
     connect(game, &Game::markMove, this, &GameWindow::markMove);
     connect(game, &Game::highlightPermittedBoards, this, &GameWindow::highlightBoards);
@@ -41,7 +53,7 @@ void GameWindow::itemClicked()
 
 void GameWindow::markMove(const int &board, const int &field, const QString symbol)
 {
-    QWidget *boardGrid = ui->centralwidget->findChild<QWidget *>(QString("gridLayoutWidget_") + QString::number(board));
+    QFrame *boardGrid = ui->centralwidget->findChild<QFrame *>(QString("frame_") + QString::number(board));
     QPushButton *button = boardGrid->findChild<QPushButton *>(QString::number(field));
     button->setIcon(QIcon(":/" + symbol));
     button->setEnabled(false);
@@ -80,7 +92,9 @@ void GameWindow::swapBoardToImage(const int &board, const QString symbol)
     itemButtons[board].clear();
 
     QLabel *label = new QLabel();
-    label->setPixmap(QPixmap(":/" + symbol));
+    QPixmap *pixmap = new QPixmap(":/" + symbol);
+    label->setPixmap(pixmap->scaled(boardFrames[board]->height(),  boardFrames[board]->width(), Qt::KeepAspectRatio));
+    //label->setPixmap(QPixmap(":/" + symbol));
     label->setObjectName(QString("label_") + QString::number(board));
     boardLayouts[board]->addWidget(label);
 }
@@ -91,15 +105,27 @@ void GameWindow::showEndRound()
     {
         boardFrames[i]->setStyleSheet("background-color:white");
     }
-    ui->continueButton->setVisible(true);
 }
 
 void GameWindow::prepareNewBoard()
 {
     clearBoards();
     game->prepareNewGame();
-    setUpBoards();
-    ui->continueButton->setVisible(false);
+
+    for(int i=0; i<9; i++)
+    {
+        boardFrames[i]->setStyleSheet("background-color:white");
+
+        QVector<QPushButton *> boardFields;
+        for(int j=0; j<9; j++)
+        {
+            QPushButton *button = createButton(j);
+            boardLayouts[i]->addWidget(button, j/3, j%3);
+            boardFields.append(std::move(button));
+        }
+        itemButtons.append(std::move(boardFields));
+    }
+
     updateWhoseTurnLabel(QString("X"));
 }
 
@@ -109,8 +135,9 @@ void GameWindow::setUpBoards()
      {
          boardFrames.append(ui->centralwidget->findChild<QFrame *>(QString("frame_") + QString::number(i)));
          boardFrames[i]->setStyleSheet("background-color:white");
-         boardLayouts.append(ui->centralwidget->findChild<QGridLayout *>(QString("board_") + QString::number(i)));
-         boardFrames[i]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+         QGridLayout *layout = new QGridLayout(boardFrames[i]);
+         layout->setObjectName(QString("board_") + QString::number(i));
+         boardLayouts.append(std::move(layout));
          boardFrames[i]->setFrameStyle(QFrame::Panel | QFrame::Plain);
 
          QVector<QPushButton *> boardFields;
@@ -120,7 +147,7 @@ void GameWindow::setUpBoards()
              boardLayouts[i]->addWidget(button, j/3, j%3);
              boardFields.append(std::move(button));
          }
-         boardFields[0]->parentWidget()->setObjectName(QString("gridLayoutWidget_") + QString::number(i));
+
          itemButtons.append(std::move(boardFields));
      }
 }
@@ -139,8 +166,6 @@ void GameWindow::clearBoards()
     }
 
     itemButtons.clear();
-    boardFrames.clear();
-    boardLayouts.clear();
 }
 
 QPushButton *GameWindow::createButton(const int &buttonNumber)

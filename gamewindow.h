@@ -35,6 +35,7 @@ public slots:
 
 private:
     Ui::GameWindow *ui;
+    QGridLayout *mainLayout;
     QVector<QVector<QPushButton *>>itemButtons;
     QVector<QGridLayout *> boardLayouts;
     QVector<QFrame *> boardFrames;

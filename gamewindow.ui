@@ -6,15 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>786</width>
+    <width>766</width>
     <height>608</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>774</width>
-    <height>608</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>GameWindow</string>
@@ -23,56 +17,46 @@
    <string notr="true">background:none</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="gridLayoutWidget">
+   <widget class="QFrame" name="boardFrame">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>50</x>
       <y>80</y>
       <width>501</width>
       <height>441</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="mainGridLayout" rowstretch="1,1,1" columnstretch="1,1,1" rowminimumheight="3,3,3" columnminimumwidth="3,3,3">
-     <item row="1" column="2">
-      <widget class="QFrame" name="frame_5">
+    <property name="baseSize">
+     <size>
+      <width>501</width>
+      <height>441</height>
+     </size>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="0">
+      <widget class="QFrame" name="frame_3">
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QWidget" name="gridLayoutWidget_7">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>141</width>
-          <height>121</height>
-         </rect>
-        </property>
-        <layout class="QGridLayout" name="board_5"/>
-       </widget>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QFrame" name="frame_7">
+     <item row="0" column="0">
+      <widget class="QFrame" name="frame_0">
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QWidget" name="gridLayoutWidget_9">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>141</width>
-          <height>121</height>
-         </rect>
-        </property>
-        <layout class="QGridLayout" name="board_7"/>
-       </widget>
       </widget>
      </item>
      <item row="0" column="2">
@@ -83,59 +67,6 @@
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QWidget" name="gridLayoutWidget_4">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>141</width>
-          <height>121</height>
-         </rect>
-        </property>
-        <layout class="QGridLayout" name="board_2"/>
-       </widget>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QFrame" name="frame_8">
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <widget class="QWidget" name="gridLayoutWidget_10">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>141</width>
-          <height>121</height>
-         </rect>
-        </property>
-        <layout class="QGridLayout" name="board_8"/>
-       </widget>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QFrame" name="frame_4">
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <widget class="QWidget" name="gridLayoutWidget_6">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>141</width>
-          <height>121</height>
-         </rect>
-        </property>
-        <layout class="QGridLayout" name="board_4"/>
-       </widget>
       </widget>
      </item>
      <item row="0" column="1">
@@ -146,38 +77,6 @@
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QWidget" name="gridLayoutWidget_3">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>9</y>
-          <width>141</width>
-          <height>121</height>
-         </rect>
-        </property>
-        <layout class="QGridLayout" name="board_1"/>
-       </widget>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QFrame" name="frame_3">
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <widget class="QWidget" name="gridLayoutWidget_5">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>141</width>
-          <height>121</height>
-         </rect>
-        </property>
-        <layout class="QGridLayout" name="board_3"/>
-       </widget>
       </widget>
      </item>
      <item row="2" column="0">
@@ -188,91 +87,56 @@
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QWidget" name="gridLayoutWidget_8">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>141</width>
-          <height>121</height>
-         </rect>
-        </property>
-        <layout class="QGridLayout" name="board_6"/>
-       </widget>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QFrame" name="frame_0">
-       <property name="baseSize">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
+     <item row="1" column="1">
+      <widget class="QFrame" name="frame_4">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
        </property>
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
        </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QFrame" name="frame_5">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
        </property>
-       <property name="styleSheet">
-        <string notr="true"/>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QWidget" name="gridLayoutWidget_2">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>9</y>
-          <width>141</width>
-          <height>121</height>
-         </rect>
-        </property>
-        <layout class="QGridLayout" name="board_0" columnstretch="0" rowminimumheight="0">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="horizontalSpacing">
-          <number>6</number>
-         </property>
-        </layout>
-       </widget>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QFrame" name="frame_7">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QFrame" name="frame_8">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
       </widget>
      </item>
     </layout>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>620</x>
-      <y>80</y>
-      <width>111</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>14</pointsize>
-     </font>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="text">
-     <string>Whose turn</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QLabel" name="whoseTurnLabel">
     <property name="geometry">
      <rect>
-      <x>620</x>
+      <x>580</x>
       <y>120</y>
-      <width>111</width>
+      <width>121</width>
       <height>111</height>
      </rect>
     </property>
@@ -292,31 +156,42 @@
      <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QWidget" name="verticalLayoutWidget">
+   <widget class="QLabel" name="whoseTurnTextLabel">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>440</y>
-      <width>121</width>
-      <height>81</height>
+      <x>580</x>
+      <y>80</y>
+      <width>131</width>
+      <height>31</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="controlButtonsLayout">
-     <item>
-      <widget class="QPushButton" name="resetButton">
-       <property name="text">
-        <string>RESET</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="continueButton">
-       <property name="text">
-        <string>CONTINUE</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white</string>
+    </property>
+    <property name="text">
+     <string>WHOSE TURN</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="resetButton">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>500</y>
+      <width>119</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>RESET</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -324,7 +199,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>786</width>
+     <width>766</width>
      <height>21</height>
     </rect>
    </property>
