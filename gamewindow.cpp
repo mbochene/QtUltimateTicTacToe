@@ -7,21 +7,25 @@ GameWindow::GameWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->boardFrame->setFrameStyle(QFrame::Panel | QFrame::Plain);
-    ui->boardFrame->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     ui->whoseTurnLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     mainLayout = new QGridLayout();
     mainLayout->setRowMinimumHeight(0, 30);
     mainLayout->setColumnMinimumWidth(0, 30);
     mainLayout->setColumnMinimumWidth(14, 30);
-    mainLayout->addWidget(ui->boardFrame, 1, 2, 20, 10);
+    mainLayout->addWidget(ui->boardView, 1, 2, 20, 10);
     mainLayout->addWidget(ui->whoseTurnTextLabel, 1, 15);
     mainLayout->addWidget(ui->whoseTurnLabel, 2, 15);
     mainLayout->addWidget(ui->resetButton, 20, 15);
     ui->centralwidget->setLayout(mainLayout);
 
+    scene = new QGraphicsScene(this);
+    scene->setBackgroundBrush(QBrush(Qt::gray));
+    ui->boardView->setScene(scene);
     setUpBoards();
+    std::cout << scene->sceneRect().x() << " " << scene->sceneRect().y() << " " << scene->sceneRect().width() << std::endl;
+    ui->boardView->show();
+
     game = new Game();
 
     connect(ui->resetButton, &QPushButton::clicked, this, &GameWindow::prepareNewBoard);
@@ -31,6 +35,7 @@ GameWindow::GameWindow(QWidget *parent)
     connect(game, &Game::markLocalWin, this, &GameWindow::swapBoardToImage);
     connect(game, &Game::updateWhoseTurn, this, &GameWindow::updateWhoseTurnLabel);
     connect(game, &Game::globalWin, this, &GameWindow::showEndRound);
+
     updateWhoseTurnLabel(QString("X"));
 }
 
@@ -129,6 +134,7 @@ void GameWindow::prepareNewBoard()
     updateWhoseTurnLabel(QString("X"));
 }
 
+/*
 void GameWindow::setUpBoards()
 {
      for(int i=0; i<9; i++)
@@ -150,6 +156,18 @@ void GameWindow::setUpBoards()
 
          itemButtons.append(std::move(boardFields));
      }
+}
+*/
+
+void GameWindow::setUpBoards()
+{
+    QPen pen(Qt::black, 1);
+    QBrush brush(Qt::white);
+    for(int i=0; i<9; i++)
+    {
+        const QPointF point = ui->boardView->mapToScene(2 + (150 * (i/3)), 2 + (150 * (i%3)));
+        boardRects.append(std::move(scene->addRect(point.x(), point.y(), 145, 145, pen, brush)));
+    }
 }
 
 void GameWindow::clearBoards()
@@ -181,3 +199,10 @@ QPushButton *GameWindow::createButton(const int &buttonNumber)
     return button;
 }
 
+void GameWindow::resizeEvent(QResizeEvent *event)
+{
+    if(event->oldSize().width() != -1)
+    {
+        ui->boardView->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+    }
+}

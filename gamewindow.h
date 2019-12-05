@@ -6,6 +6,10 @@
 #include <QGridLayout>
 #include <QFrame>
 #include <QLabel>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include <QGraphicsRectItem>
+#include <QResizeEvent>
 #include <iostream>
 #include <game.h>
 
@@ -36,6 +40,9 @@ public slots:
 private:
     Ui::GameWindow *ui;
     QGridLayout *mainLayout;
+    QGraphicsView boardView;
+    QGraphicsScene *scene;
+    QVector<QGraphicsRectItem *> boardRects;
     QVector<QVector<QPushButton *>>itemButtons;
     QVector<QGridLayout *> boardLayouts;
     QVector<QFrame *> boardFrames;
@@ -44,5 +51,6 @@ private:
     void setUpBoards();
     void clearBoards();
     QPushButton *createButton(const int &buttonNumber);
+    void resizeEvent(QResizeEvent *event);
 };
 #endif // GAMEWINDOW_H
