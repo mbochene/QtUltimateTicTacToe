@@ -12,6 +12,7 @@
 #include <QResizeEvent>
 #include <iostream>
 #include <game.h>
+#include <whoseturnlabel.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class GameWindow; }
@@ -39,7 +40,7 @@ public slots:
 
 private:
     Ui::GameWindow *ui;
-    QGridLayout *mainLayout;
+    WhoseTurnLabel *whoseTurnLabel;
     QGraphicsView boardView;
     QGraphicsScene *scene;
     QVector<QGraphicsRectItem *> boardRects;

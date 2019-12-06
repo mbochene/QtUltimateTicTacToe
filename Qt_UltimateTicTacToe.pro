@@ -16,19 +16,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    boardbutton.cpp \
     game.cpp \
     main.cpp \
     gamewindow.cpp \
     board.cpp \
-    gamestate.cpp
+    gamestate.cpp \
+    whoseturnlabel.cpp
 
 HEADERS += \
-    boardbutton.h \
     game.h \
     gamewindow.h \
     board.hpp \
-    gamestate.hpp
+    gamestate.hpp \
+    whoseturnlabel.h
 
 FORMS += \
     gamewindow.ui

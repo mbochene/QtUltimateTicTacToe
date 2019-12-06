@@ -7,23 +7,17 @@ GameWindow::GameWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->whoseTurnLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-
-    mainLayout = new QGridLayout();
-    mainLayout->setRowMinimumHeight(0, 30);
-    mainLayout->setColumnMinimumWidth(0, 30);
-    mainLayout->setColumnMinimumWidth(14, 30);
-    mainLayout->addWidget(ui->boardView, 1, 2, 20, 10);
-    mainLayout->addWidget(ui->whoseTurnTextLabel, 1, 15);
-    mainLayout->addWidget(ui->whoseTurnLabel, 2, 15);
-    mainLayout->addWidget(ui->resetButton, 20, 15);
-    ui->centralwidget->setLayout(mainLayout);
-
     scene = new QGraphicsScene(this);
     scene->setBackgroundBrush(QBrush(Qt::gray));
     ui->boardView->setScene(scene);
     setUpBoards();
     std::cout << scene->sceneRect().x() << " " << scene->sceneRect().y() << " " << scene->sceneRect().width() << std::endl;
+
+    whoseTurnLabel = new WhoseTurnLabel();
+    whoseTurnLabel->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+    whoseTurnLabel->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    ui->verticalLayout->addWidget(whoseTurnLabel, 2);
+
     ui->boardView->show();
 
     game = new Game();
@@ -67,7 +61,10 @@ void GameWindow::markMove(const int &board, const int &field, const QString symb
 void GameWindow::updateWhoseTurnLabel(const QString symbol)
 {
     QPixmap *pixmap = new QPixmap(":/" + symbol);
-    ui->whoseTurnLabel->setPixmap(pixmap->scaled(ui->whoseTurnLabel->height(), ui->whoseTurnLabel->width(), Qt::KeepAspectRatio));
+    std::cout << whoseTurnLabel->width() << " " << whoseTurnLabel->height() << std::endl;
+    whoseTurnLabel->setSymbol(symbol);
+    update();
+    //ui->whoseTurnLabel->setPixmap(pixmap->scaled(ui->whoseTurnLabel->width(), ui->whoseTurnLabel->height(), Qt::KeepAspectRatio));
 }
 
 void GameWindow::highlightBoards(const QVector<int> permittedBoards)
