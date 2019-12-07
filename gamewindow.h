@@ -36,7 +36,7 @@ public slots:
     void markMove(const int &board, const int &field, const QString symbol);
     void updateWhoseTurnLabel(const QString symbol);
     void highlightBoards(const QVector<int> permittedBoards);
-    void swapBoardToImage(const int & board, const QString symbol);
+    void swapBoardToSymbol(const int & board, const QString symbol);
     void showEndRound();
     void prepareNewBoard();
 
@@ -46,14 +46,9 @@ private:
     QGraphicsScene *scene;
     QVector<LocalBoardItem *> localBoards;
     QVector<QVector<FieldGraphicsItem *>> boardFields;
-    QVector<QVector<QPushButton *>>itemButtons;
-    QVector<QGridLayout *> boardLayouts;
-    QVector<QFrame *> boardFrames;
     Game *game;
 
     void setUpBoards();
     void clearBoards();
-    QPushButton *createButton(const int &buttonNumber);
-    bool eventFilter(QObject *object, QEvent *event);
 };
 #endif // GAMEWINDOW_H

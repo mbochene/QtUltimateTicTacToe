@@ -21,7 +21,7 @@ void FieldGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 
 void FieldGraphicsItem::setSymbol(const QString symbol)
 {
-    if(symbol==QString("X") || symbol==QString("O"))
+    if(symbol==QString("X") || symbol==QString("O") || symbol==QString("NONE"))
     {
         this->symbol = symbol;
         update();

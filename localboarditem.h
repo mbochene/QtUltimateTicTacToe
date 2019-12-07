@@ -11,10 +11,17 @@ public:
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
     void setColor(const QColor);
+    void setSymbol(const QString symbol);
 
 private:
     qreal x, y, width, height;
     QColor color;
+    QString symbol;
+
+    void paintFrame(QPainter *painter);
+    void paintBoard(QPainter *painter);
+    void paintX(QPainter *painter);
+    void paintO(QPainter *painter);
 };
 
 #endif // LOCALBOARDITEM_H
