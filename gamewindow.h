@@ -6,8 +6,15 @@
 #include <QGridLayout>
 #include <QFrame>
 #include <QLabel>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include <QGraphicsRectItem>
+#include <QResizeEvent>
 #include <iostream>
 #include <game.h>
+#include <whoseturnlabel.h>
+#include <localboarditem.h>
+#include <fieldgraphicsitem.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class GameWindow; }
@@ -25,24 +32,23 @@ signals:
     void reportMove(const int &board, const int &field);
 
 public slots:
-    void itemClicked();
+    void itemClicked(const QGraphicsItem *item);
     void markMove(const int &board, const int &field, const QString symbol);
     void updateWhoseTurnLabel(const QString symbol);
     void highlightBoards(const QVector<int> permittedBoards);
-    void swapBoardToImage(const int & board, const QString symbol);
+    void swapBoardToSymbol(const int & board, const QString symbol);
     void showEndRound();
     void prepareNewBoard();
 
 private:
     Ui::GameWindow *ui;
-    QGridLayout *mainLayout;
-    QVector<QVector<QPushButton *>>itemButtons;
-    QVector<QGridLayout *> boardLayouts;
-    QVector<QFrame *> boardFrames;
+    WhoseTurnLabel *whoseTurnLabel;
+    QGraphicsScene *scene;
+    QVector<LocalBoardItem *> localBoards;
+    QVector<QVector<FieldGraphicsItem *>> boardFields;
     Game *game;
 
     void setUpBoards();
     void clearBoards();
-    QPushButton *createButton(const int &buttonNumber);
 };
 #endif // GAMEWINDOW_H
