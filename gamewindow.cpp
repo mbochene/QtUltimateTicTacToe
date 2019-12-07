@@ -9,19 +9,21 @@ GameWindow::GameWindow(QWidget *parent)
 
     scene = new QGraphicsScene(this);
     scene->setBackgroundBrush(QBrush(Qt::gray));
-    ui->boardView->setScene(scene);
+    //ui->boardView->setScene(scene);
+
     setUpBoards();
-    std::cout << scene->sceneRect().x() << " " << scene->sceneRect().y() << " " << scene->sceneRect().width() << std::endl;
+    ui->boardView->setScene(scene);
+    ui->boardView->show();
+    ui->boardView->installEventFilter(this);
 
     whoseTurnLabel = new WhoseTurnLabel();
     whoseTurnLabel->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     whoseTurnLabel->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
     ui->verticalLayout->addWidget(whoseTurnLabel, 0);
 
-    ui->boardView->show();
-
     game = new Game();
 
+    connect(ui->boardView, &BoardGraphicsView::itemClicked, this, &GameWindow::itemClicked);
     connect(ui->resetButton, &QPushButton::clicked, this, &GameWindow::prepareNewBoard);
     connect(this, &GameWindow::reportMove, game, &Game::processMove);
     connect(game, &Game::markMove, this, &GameWindow::markMove);
@@ -39,23 +41,38 @@ GameWindow::~GameWindow()
     delete game;
 }
 
-void GameWindow::itemClicked()
+void GameWindow::itemClicked(const QGraphicsItem *item)
 {
-    QPushButton *clickedItem = qobject_cast<QPushButton*>(sender());
-    clickedItem->setAutoExclusive(false);
-    clickedItem->setChecked(false);
-    clickedItem->setAutoExclusive(true);
-    const int board = clickedItem->parentWidget()->objectName().back().digitValue();
-    const int field = clickedItem->objectName().toInt();
-    emit reportMove(board, field);
+    const QGraphicsItem *localBoard = item->parentItem();
+
+    if(localBoard)
+    {
+        for(int i=0; i<9; i++)
+        {
+            if(localBoards[i] == localBoard)
+            {
+                for(int j=0; j<9; j++)
+                {
+                    if(boardFields[i][j] == item)
+                    {
+                        emit reportMove(i, j);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+    }
 }
 
 void GameWindow::markMove(const int &board, const int &field, const QString symbol)
 {
-    QFrame *boardGrid = ui->centralwidget->findChild<QFrame *>(QString("frame_") + QString::number(board));
-    QPushButton *button = boardGrid->findChild<QPushButton *>(QString::number(field));
-    button->setIcon(QIcon(":/" + symbol));
-    button->setEnabled(false);
+    boardFields[board][field]->setSymbol(symbol);
+   //const qreal width = boardFields[board][field]->rect().width();
+   //const qreal height = boardFields[board][field]->rect().height();
+   //QPixmap pixmap = QPixmap(":/" + symbol).scaled(width, height, Qt::KeepAspectRatio);
+   //QPainter pixmapPainter(&pixmap);
+   //boardFields[board][field]->paint(&pixmapPainter, nullptr);
 }
 
 void GameWindow::updateWhoseTurnLabel(const QString symbol)
@@ -75,12 +92,12 @@ void GameWindow::highlightBoards(const QVector<int> permittedBoards)
     {
         if(j < permittedBoardsSize && i == permittedBoards[j])
         {
-            boardFrames[i]->setStyleSheet("background-color:rgb(235, 123, 123)");
+            localBoards[i]->setColor(Qt::red);
             ++j;
         }
         else
         {
-            boardFrames[i]->setStyleSheet("background-color:white");
+            localBoards[i]->setColor(Qt::white);
         }
     }
 }
@@ -130,6 +147,7 @@ void GameWindow::prepareNewBoard()
     updateWhoseTurnLabel(QString("X"));
 }
 
+
 /*
 void GameWindow::setUpBoards()
 {
@@ -157,12 +175,25 @@ void GameWindow::setUpBoards()
 
 void GameWindow::setUpBoards()
 {
-    QPen pen(Qt::black, 1);
-    QBrush brush(Qt::white);
     for(int i=0; i<9; i++)
     {
-        const QPointF point = ui->boardView->mapToScene(2 + (150 * (i/3)), 2 + (150 * (i%3)));
-        boardRects.append(std::move(scene->addRect(point.x(), point.y(), 145, 145, pen, brush)));
+        const QPointF point = ui->boardView->mapToScene(150 * (i%3), 150 * (i/3) );
+        LocalBoardItem *localBoard = new LocalBoardItem(0, 0, 144, 144);
+        localBoards.append(std::move(localBoard));
+        localBoards[i]->setPos(point);
+        scene->addItem(localBoards[i]);
+
+        QVector<FieldGraphicsItem *> fields;
+        for(int j=0; j<9; j++)
+        {
+            const QPointF point2 = ui->boardView->mapToScene(48 * (j%3), 48 * (j/3));
+            FieldGraphicsItem *field = new FieldGraphicsItem(0, 0, 48, 48);
+            fields.append(std::move(field));
+            fields[j]->setPos(point2);
+            fields[j]->setParentItem(localBoards[i]);
+            //fields[j]->setBrush(Qt::red);
+        }
+        boardFields.append(std::move(fields));
     }
 }
 
@@ -191,14 +222,21 @@ QPushButton *GameWindow::createButton(const int &buttonNumber)
     button->setAutoExclusive(true);
     button->setObjectName(QString::number(buttonNumber));
     button->setIconSize(button->sizeHint());
-    connect(button, &QPushButton::clicked, this, &GameWindow::itemClicked);
+    //connect(button, &QPushButton::clicked, this, &GameWindow::itemClicked);
     return button;
 }
 
-void GameWindow::resizeEvent(QResizeEvent *event)
+
+bool GameWindow::eventFilter(QObject *object, QEvent *event)
 {
-    if(event->oldSize().width() != -1)
+    if(object == ui->boardView && event->type() == QEvent::MouseButtonPress)
     {
-        ui->boardView->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+        QMouseEvent* me = static_cast<QMouseEvent*>(event);
+        if (QGraphicsItem *item = ui->boardView->itemAt(me->pos())) {
+                std::cout << "itemmmmmmm " << item << std::endl;
+            } else {
+                std::cout << "You didn't click on an item." << item<< std::endl;
+            }
     }
+    return false;
 }

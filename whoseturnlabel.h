@@ -9,7 +9,7 @@ class WhoseTurnLabel : public QLabel
     Q_OBJECT
 public:
     explicit WhoseTurnLabel(QString symbol = QString("X"), QWidget *parent = nullptr);
-    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent *) override;
 
 signals:
 

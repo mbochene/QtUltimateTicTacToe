@@ -27,13 +27,13 @@ void WhoseTurnLabel::paintX()
 {
     QPainter painter(this);
     painter.setPen(QPen(Qt::black, 4));
-    painter.drawLine(0, 0, this->width(), this->height());
-    painter.drawLine(0, this->height(), this->width(), 0);
+    painter.drawLine(2, 2, this->width()-2, this->height()-2);
+    painter.drawLine(2, this->height()-2, this->width()-2, 2);
 }
 
 void WhoseTurnLabel::paintO()
 {
     QPainter painter(this);
-    painter.setPen(QPen(Qt::black, 4));
-    painter.drawEllipse(0, 0, this->width(), this->height());
+    painter.setPen(QPen(Qt::black, 6));
+    painter.drawEllipse(6, 6, (this->width())-12, (this->height())-12);
 }
