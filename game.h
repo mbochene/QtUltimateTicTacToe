@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <gamestate.hpp>
-#include <iostream>
 
 class Game : public QObject
 {

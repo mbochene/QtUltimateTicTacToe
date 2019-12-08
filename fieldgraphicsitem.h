@@ -1,11 +1,14 @@
 #ifndef FIELDGRAPHICSITEM_H
 #define FIELDGRAPHICSITEM_H
 
-#include <QGraphicsItem>
+#include <QGraphicsRectItem>
 #include <QPainter>
+#include <QObject>
 
-class FieldGraphicsItem : public QGraphicsRectItem
+class FieldGraphicsItem : public QObject, public QGraphicsRectItem
 {
+    Q_OBJECT
+    Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 public:
     explicit FieldGraphicsItem(qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent = nullptr);
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;

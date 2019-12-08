@@ -13,14 +13,13 @@ void WhoseTurnLabel::paintEvent(QPaintEvent *)
         paintO();
 }
 
-bool WhoseTurnLabel::setSymbol(QString symbol)
+void WhoseTurnLabel::setSymbol(QString symbol)
 {
     if(symbol==QString("X") || symbol==QString("O"))
     {
         this->symbol = symbol;
-        return true;
+        update();
     }
-    return false;
 }
 
 void WhoseTurnLabel::paintX()

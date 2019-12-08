@@ -3,7 +3,6 @@
 
 #include <QGraphicsView>
 #include <QGraphicsItem>
-#include <iostream>
 #include <QMouseEvent>
 
 class BoardGraphicsView : public QGraphicsView

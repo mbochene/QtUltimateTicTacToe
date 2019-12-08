@@ -9,14 +9,13 @@ GameWindow::GameWindow(QWidget *parent)
 
     scene = new QGraphicsScene(this);
     scene->setBackgroundBrush(QBrush(Qt::gray));
-    //ui->boardView->setScene(scene);
 
     setUpBoards();
     ui->boardView->setScene(scene);
     ui->boardView->show();
     ui->boardView->installEventFilter(this);
 
-    whoseTurnLabel = new WhoseTurnLabel();
+    whoseTurnLabel = new WhoseTurnLabel(QString("X"));
     whoseTurnLabel->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     whoseTurnLabel->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
     ui->verticalLayout->addWidget(whoseTurnLabel, 0);
@@ -31,8 +30,6 @@ GameWindow::GameWindow(QWidget *parent)
     connect(game, &Game::markLocalWin, this, &GameWindow::swapBoardToSymbol);
     connect(game, &Game::updateWhoseTurn, this, &GameWindow::updateWhoseTurnLabel);
     connect(game, &Game::globalWin, this, &GameWindow::showEndRound);
-
-    updateWhoseTurnLabel(QString("X"));
 }
 
 GameWindow::~GameWindow()
@@ -67,14 +64,23 @@ void GameWindow::itemClicked(const QGraphicsItem *item)
 
 void GameWindow::markMove(const int &board, const int &field, const QString symbol)
 {
+    boardFields[board][field]->setOpacity(0);
     boardFields[board][field]->setSymbol(symbol);
+
+    animation = new QPropertyAnimation(boardFields[board][field], "opacity");
+    {
+        animation->setDuration(600);
+        animation->setStartValue(0);
+        animation->setEndValue(1);
+        animation->setEasingCurve(QEasingCurve::InQuad);
+    }
+
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 void GameWindow::updateWhoseTurnLabel(const QString symbol)
 {
-    std::cout << whoseTurnLabel->width() << " " << whoseTurnLabel->height() << std::endl;
     whoseTurnLabel->setSymbol(symbol);
-    update();
 }
 
 void GameWindow::highlightBoards(const QVector<int> permittedBoards)
@@ -98,12 +104,48 @@ void GameWindow::highlightBoards(const QVector<int> permittedBoards)
 
 void GameWindow::swapBoardToSymbol(const int &board, const QString symbol)
 {
+    sequentialAnimation = new QSequentialAnimationGroup();
+    parallelAnimation = new QParallelAnimationGroup();
+    QPropertyAnimation *animation;
+
     for(FieldGraphicsItem *x : boardFields[board])
     {
-        x->setSymbol("NONE");
-        x->setVisible(false);
+        animation = new QPropertyAnimation(x, "opacity");
+        {
+            animation->setDuration(600);
+            animation->setStartValue(1);
+            animation->setEndValue(0);
+        }
+
+        connect(animation, &QPropertyAnimation::finished, [x](){
+            x->setVisible(false);
+            x->setOpacity(1);
+        });
+
+        parallelAnimation->addAnimation(animation);
     }
-    localBoards[board]->setSymbol(symbol);
+
+    animation = new QPropertyAnimation(localBoards[board], "opacity");
+    {
+        animation->setDuration(600);
+        animation->setStartValue(1);
+        animation->setEndValue(0);
+    }
+
+    parallelAnimation->addAnimation(animation);
+    connect(parallelAnimation, &QPropertyAnimation::finished, [=](){localBoards[board]->setSymbol(symbol); });
+
+    sequentialAnimation->addAnimation(parallelAnimation);
+
+    animation = new QPropertyAnimation(localBoards[board], "opacity");
+    {
+        animation->setDuration(600);
+        animation->setStartValue(0);
+        animation->setEndValue(1);
+    }
+
+    sequentialAnimation->addAnimation(animation);
+    sequentialAnimation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 void GameWindow::showEndRound()
@@ -149,6 +191,7 @@ void GameWindow::clearBoards()
     for(int i=0; i<9; i++)
     {
         localBoards[i]->setSymbol("NONE");
+        localBoards[i]->setColor(Qt::white);
 
         for(int j=0; j<9; j++)
         {

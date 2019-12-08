@@ -1,6 +1,6 @@
 #include "localboarditem.h"
 
-LocalBoardItem::LocalBoardItem(qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent) : QGraphicsItem(parent)
+LocalBoardItem::LocalBoardItem(qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent) : QObject(), QGraphicsItem(parent)
 {
     this->x = x;
     this->y = y;

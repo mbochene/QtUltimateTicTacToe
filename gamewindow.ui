@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>GameWindow</string>
+   <string>Ultimate Tic Tac Toe</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background:none</string>
@@ -137,7 +137,7 @@
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color:white</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>WHOSE TURN</string>
@@ -170,16 +170,6 @@
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>794</width>
-     <height>21</height>
-    </rect>
-   </property>
   </widget>
  </widget>
  <customwidgets>

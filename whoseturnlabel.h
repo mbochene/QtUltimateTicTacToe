@@ -10,11 +10,7 @@ class WhoseTurnLabel : public QLabel
 public:
     explicit WhoseTurnLabel(QString symbol = QString("X"), QWidget *parent = nullptr);
     void paintEvent(QPaintEvent *) override;
-
-signals:
-
-public slots:
-    bool setSymbol(QString symbol);
+    void setSymbol(QString symbol);
 
 private:
     QString symbol;

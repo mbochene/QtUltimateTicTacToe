@@ -2,14 +2,12 @@
 #define GAMEWINDOW_H
 
 #include <QMainWindow>
-#include <QPushButton>
-#include <QGridLayout>
-#include <QFrame>
 #include <QLabel>
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include <QGraphicsRectItem>
-#include <QResizeEvent>
+#include <QPropertyAnimation>
+#include <QParallelAnimationGroup>
+#include <QSequentialAnimationGroup>
 #include <iostream>
 #include <game.h>
 #include <whoseturnlabel.h>
@@ -47,6 +45,9 @@ private:
     QVector<LocalBoardItem *> localBoards;
     QVector<QVector<FieldGraphicsItem *>> boardFields;
     Game *game;
+    QSequentialAnimationGroup *sequentialAnimation;
+    QParallelAnimationGroup *parallelAnimation;
+    QPropertyAnimation *animation;
 
     void setUpBoards();
     void clearBoards();

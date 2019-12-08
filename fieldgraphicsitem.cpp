@@ -1,6 +1,6 @@
 #include "fieldgraphicsitem.h"
 
-FieldGraphicsItem::FieldGraphicsItem(qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent) : QGraphicsRectItem(x, y, width, height, parent)
+FieldGraphicsItem::FieldGraphicsItem(qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent) : QObject(), QGraphicsRectItem(x, y, width, height, parent)
 {
     symbol = QString("NONE");
 }

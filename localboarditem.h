@@ -4,8 +4,11 @@
 #include <QGraphicsItem>
 #include <QPainter>
 
-class LocalBoardItem : public QGraphicsItem
+class LocalBoardItem : public QObject, public QGraphicsItem
 {
+    Q_OBJECT
+    Q_INTERFACES(QGraphicsItem)
+    Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 public:
     explicit LocalBoardItem(qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent = nullptr);
     QRectF boundingRect() const override;
