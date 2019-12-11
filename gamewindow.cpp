@@ -15,10 +15,12 @@ GameWindow::GameWindow(QWidget *parent)
     ui->boardView->show();
     ui->boardView->installEventFilter(this);
 
+    /*
     whoseTurnLabel = new WhoseTurnLabel(QString("X"));
     whoseTurnLabel->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
     whoseTurnLabel->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
     ui->verticalLayout->addWidget(whoseTurnLabel, 0);
+    */
 
     game = new Game();
 
@@ -30,6 +32,8 @@ GameWindow::GameWindow(QWidget *parent)
     connect(game, &Game::markLocalWin, this, &GameWindow::swapBoardToSymbol);
     connect(game, &Game::updateWhoseTurn, this, &GameWindow::updateWhoseTurnLabel);
     connect(game, &Game::globalWin, this, &GameWindow::showEndRound);
+
+    updateWhoseTurnLabel(QString("X"));
 }
 
 GameWindow::~GameWindow()
@@ -80,7 +84,7 @@ void GameWindow::markMove(const int &board, const int &field, const QString symb
 
 void GameWindow::updateWhoseTurnLabel(const QString symbol)
 {
-    whoseTurnLabel->setSymbol(symbol);
+    ui->whoseTurnLabel->setSymbol(symbol);
 }
 
 void GameWindow::highlightBoards(const QVector<int> permittedBoards)

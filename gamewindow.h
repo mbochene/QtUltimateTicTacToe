@@ -40,7 +40,7 @@ public slots:
 
 private:
     Ui::GameWindow *ui;
-    WhoseTurnLabel *whoseTurnLabel;
+    //WhoseTurnLabel *whoseTurnLabel;
     QGraphicsScene *scene;
     QVector<LocalBoardItem *> localBoards;
     QVector<QVector<FieldGraphicsItem *>> boardFields;

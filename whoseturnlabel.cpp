@@ -1,6 +1,6 @@
 #include "whoseturnlabel.h"
 
-WhoseTurnLabel::WhoseTurnLabel(QString symbol, QWidget *parent) : QLabel(parent)
+WhoseTurnLabel::WhoseTurnLabel(QWidget *parent, QString symbol) : QLabel(parent)
 {
     this->symbol = symbol;
 }
